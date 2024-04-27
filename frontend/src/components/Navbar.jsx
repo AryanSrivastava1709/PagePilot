@@ -1,8 +1,38 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "./Login/Login";
+import { AuthContext, useAuth } from "../../Context/AuthProvider";
+import { Toaster, toast } from "react-hot-toast";
+import { useContext } from "react";
 
 function Navbar() {
+  const [authUser, setAuthUser] = useAuth();
+  const handleLogin = () => {
+    const intitalAuthUser = localStorage.getItem("auth");
+    if (intitalAuthUser) {
+      setAuthUser(JSON.parse(intitalAuthUser));
+    }
+  };
+  const handleLogout = () => {
+    try {
+      setAuthUser(null);
+      localStorage.removeItem("auth");
+      toast.success("Logout Successfully!!😢", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    } catch (error) {
+      toast.error("Please login first!!🙃", {
+        style: {
+          borderRadius: "10px",
+          background: "#333",
+          color: "#fff",
+        },
+      });
+    }
+  };
   const navItems = (
     <>
       <li>
@@ -29,6 +59,7 @@ function Navbar() {
   );
   return (
     <>
+      <Toaster position="top" reverseOrder={true} />
       <div className="w-full bg-base-200 fixed inset-x-0 top-0 mx-auto md:px-8 px-2 z-50 shadow-md shadow-pink-500/80 text-white">
         <div className="navbar">
           <div className="navbar-start">
@@ -87,12 +118,18 @@ function Navbar() {
             </div>
             <div>
               <a
-                onClick={() => {
-                  document.getElementById("my_modal_2").showModal();
-                }}
-                className="btn hover:bg-blue-500 text-white"
+                onClick={
+                  authUser
+                    ? handleLogout
+                    : () => {
+                        document.getElementById("my_modal_2").showModal();
+                      }
+                }
+                className={`btn  ${
+                  authUser ? "hover:bg-red-500" : "hover:bg-blue-500"
+                } text-white`}
               >
-                Login
+                {authUser ? "Logout" : "Login"}
               </a>
               <Login />
             </div>

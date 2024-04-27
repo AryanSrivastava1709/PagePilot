@@ -1,8 +1,20 @@
 import { Link } from "react-router-dom";
-import data from "../../public/data/freeBooks.json";
+import axios from "axios";
 import Cards from "./Cards";
+import { useEffect, useState } from "react";
 function Courses() {
-  const books = data.books;
+  const [books, setBooks] = useState([]);
+  useEffect(() => {
+    const getBook = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/book");
+        setBooks(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBook();
+  }, []);
   return (
     <>
       <div className="max-w-[1800px] mx-auto md:px-20 px-4">
@@ -26,7 +38,7 @@ function Courses() {
         </div>
         <div className="mt-12 grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 justify-items-center align-items-center">
           {books.map((item) => (
-            <Cards key={item.id} item={item} />
+            <Cards key={item._id} item={item} />
           ))}
         </div>
       </div>

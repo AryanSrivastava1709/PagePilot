@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { Toaster, toast } from "react-hot-toast";
 
 function Sign() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -9,9 +12,50 @@ function Sign() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const userData = {
+      fullname: data.fullname,
+      email: data.email,
+      password: data.password,
+    };
+    //console.log(userData); for test purpose
+    await axios
+      .post("http://localhost:3000/user/signup", userData)
+      .then((res) => {
+        console.log(res.data);
+
+        if (res.status === 201) {
+          toast.success(
+            "User registered successfully!!😍 Now please login yourself",
+            {
+              style: {
+                borderRadius: "10px",
+                background: "#333",
+                color: "#fff",
+              },
+            }
+          );
+          localStorage.setItem("auth", JSON.stringify(res.data.user));
+          setTimeout(() => {
+            navigate("/"); // Redirect to home page
+          }, 2000); // Delay of 2 seconds
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          toast.error(err.response.data.message, {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+      });
+  };
   return (
     <>
+      <Toaster position="top-right" reverseOrder={true} />
       <div className="flex items-center justify-center h-screen w-screen bg-gradient-radial">
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -20,12 +64,12 @@ function Sign() {
           <div className="mt-6">
             <h2 className="text-white text-xl mt-2 mb-4 ml-2">Name</h2>
             <input
-              {...register("name", { required: true })}
+              {...register("fullname", { required: true })}
               type="text"
               placeholder="Name"
               className=" input input-bordered w-full"
             />
-            {errors.name && (
+            {errors.fullname && (
               <div className=" mt-3 text-lg text-red-500">
                 Enter your name!!
               </div>
@@ -72,7 +116,7 @@ function Sign() {
                 />
               </svg>
               <input
-                {...register("pasword", { required: true })}
+                {...register("password", { required: true })}
                 type="password"
                 className="grow"
                 placeholder="Password"

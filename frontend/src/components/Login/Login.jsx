@@ -1,7 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
+import axios from "axios";
+import { Toaster, toast } from "react-hot-toast";
+import { useState } from "react";
+import { useAuth } from "../../../Context/AuthProvider";
 function Login() {
+  const navigate = useNavigate();
+  const [authUser, setAuthUser] = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -9,11 +15,48 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    const userData = {
+      email: data.email,
+      password: data.password,
+    };
+    //console.log(userData); for test purpose
+    await axios
+      .post("http://localhost:3000/user/login", userData)
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Log in successfull", {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          localStorage.setItem("auth", JSON.stringify(res.data.user));
+          setAuthUser(res.data.user);
+          setIsOpen(false);
+          setInterval(() => {
+            navigate("/course");
+          }, 1000);
+        }
+      })
+      .catch((err) => {
+        if (err.response) {
+          toast.error(err.response.data.message, {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+      });
+  };
   return (
     <>
+      <Toaster position="top" reverseOrder={true} />
       <div>
-        <dialog id="my_modal_2" className="modal">
+        <dialog id="my_modal_2" className="modal" open={isOpen}>
           <div className="modal-box">
             <h1 className="font-bold text-2xl text-pink-500">Login</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="modal-backdrop">
@@ -71,7 +114,10 @@ function Login() {
                 )}
               </div>
               <div className="flex justify-between items-center">
-                <button className="btn btn-outline btn-secondary">
+                <button
+                  className="btn btn-outline btn-secondary"
+                  onClick={() => setIsOpen(true)}
+                >
                   Log in
                 </button>
                 <p className="text-white">

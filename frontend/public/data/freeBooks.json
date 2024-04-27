@@ -1,0 +1,124 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "name": "The Great Gatsby",
+      "description": "A story of wealth, love, and tragedy in 1920s America.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/81QuEGw8VPL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
+      "genre": "Fiction",
+      "type": "Novel"
+    },
+    {
+      "id": 2,
+      "name": "To Kill a Mockingbird",
+      "description": "A powerful exploration of racial injustice in the Deep South.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/81gepf1eMqL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Fiction",
+      "type": "Novel"
+    },
+    {
+      "id": 3,
+      "name": "Pride and Prejudice",
+      "description": "A classic tale of love, manners, and societal expectations.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/71Q1tPupKjL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Romance",
+      "type": "Novel"
+    },
+    {
+      "id": 4,
+      "name": "1984",
+      "description": "A dystopian novel depicting a totalitarian society ruled by Big Brother.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/7180qjGSgDL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Dystopian",
+      "type": "Novel"
+    },
+    {
+      "id": 5,
+      "name": "The Catcher in the Rye",
+      "description": "A coming-of-age story of teenage angst and rebellion.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/8125BDk3l9L._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Fiction",
+      "type": "Novel"
+    },
+    {
+      "id": 6,
+      "name": "To the Lighthouse",
+      "description": "An introspective novel exploring the complexities of human relationships.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/41GWqsNHAPL.jpg",
+      "genre": "Fiction",
+      "type": "Novel"
+    },
+    {
+      "id": 7,
+      "name": "Moby-Dick",
+      "description": "A gripping tale of obsession and revenge on the high seas.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/61PBBKyZ1rL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Adventure",
+      "type": "Novel"
+    },
+    {
+      "id": 8,
+      "name": "The Lord of the Rings",
+      "description": "An epic fantasy adventure set in a richly imagined world.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/91Yr0n5lNWL._AC_UF1000,1000_QL80_DpWeblab_.jpg",
+      "genre": "Fantasy",
+      "type": "Novel"
+    },
+    {
+      "id": 9,
+      "name": "Harry Potter",
+      "description": "The magical beginning of a boy wizard's journey at Hogwarts.",
+      "price": 0,
+      "category": "Free",
+      "image": "https://m.media-amazon.com/images/I/71RVt35ZAbL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Fantasy",
+      "type": "Novel"
+    },
+    {
+      "id": 10,
+      "name": "The Da Vinci Code",
+      "description": "A thrilling mystery that combines art, history, and religion.",
+      "price": 200,
+      "category": "Paid",
+      "image": "https://m.media-amazon.com/images/I/71y4X5150dL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Mystery",
+      "type": "Novel"
+    },
+    {
+      "id": 11,
+      "name": "The Hunger Games",
+      "description": "A dystopian adventure where teenagers fight for survival in a televised competition.",
+      "price": 500,
+      "category": "Paid",
+      "image": "https://m.media-amazon.com/images/I/61I24wOsn8L._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Dystopian",
+      "type": "Novel"
+    },
+    {
+      "id": 12,
+      "name": "After",
+      "description": "A passionate love story between a good girl and a bad boy.",
+      "price": 400,
+      "category": "Paid",
+      "image": "https://m.media-amazon.com/images/I/71HA0LMmwZL._AC_UF1000,1000_QL80_.jpg",
+      "genre": "Romance",
+      "type": "Novel"
+    }
+  ]
+}

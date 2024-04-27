@@ -1,0 +1,5 @@
+objectives
+screenshot
+intro and conlusion on ppt
+
+container mx-auto md:px-20 px2

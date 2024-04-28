@@ -36,24 +36,24 @@ function Navbar() {
   const navItems = (
     <>
       <li>
-        <a href="/" className="hover:text-pink-400">
+        <Link to="/" className="hover:text-pink-400">
           Home
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/course" className="hover:text-pink-400">
+        <Link to="/course" className="hover:text-pink-400">
           Books
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/contact" className="hover:text-pink-400">
+        <Link to="/contact" className="hover:text-pink-400">
           Contact
-        </a>
+        </Link>
       </li>
       <li>
-        <a href="/about" className="hover:text-pink-400">
+        <Link to="/about" className="hover:text-pink-400">
           About
-        </a>
+        </Link>
       </li>
     </>
   );

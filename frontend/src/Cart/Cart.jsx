@@ -79,7 +79,7 @@ function Cart() {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="h-screen">
           <h1 className="text-4xl text-white font-normal mt-24 ml-16">
             You have no items in your cart🙃
           </h1>
@@ -93,6 +93,7 @@ function Cart() {
           </button>
         </div>
       )}
+      <Footer />
     </>
   );
 }

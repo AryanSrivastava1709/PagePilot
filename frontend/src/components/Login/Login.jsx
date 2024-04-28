@@ -22,7 +22,7 @@ function Login() {
     };
     //console.log(userData); for test purpose
     await axios
-      .post("http://localhost:3000/user/login", userData)
+      .post("https://page-pilot-api.vercel.app/user/login", userData)
       .then((res) => {
         if (res.status === 200) {
           toast.success("Log in successfull", {

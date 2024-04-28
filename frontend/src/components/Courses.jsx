@@ -7,7 +7,7 @@ function Courses() {
   useEffect(() => {
     const getBook = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/book");
+        const res = await axios.get("https://page-pilot-api.vercel.app/book");
         setBooks(res.data);
       } catch (error) {
         console.log(error);

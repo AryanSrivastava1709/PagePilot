@@ -20,7 +20,7 @@ function Sign() {
     };
     //console.log(userData); for test purpose
     await axios
-      .post("http://localhost:3000/user/signup", userData)
+      .post("https://page-pilot-api.vercel.app/user/signup", userData)
       .then((res) => {
         console.log(res.data);
 
@@ -35,7 +35,6 @@ function Sign() {
               },
             }
           );
-          localStorage.setItem("auth", JSON.stringify(res.data.user));
           setTimeout(() => {
             navigate("/"); // Redirect to home page
           }, 2000); // Delay of 2 seconds

@@ -36,7 +36,7 @@ function Login() {
           setAuthUser(res.data.user);
           setIsOpen(false);
           setInterval(() => {
-            navigate("/course");
+            window.location.reload();
           }, 1000);
         }
       })

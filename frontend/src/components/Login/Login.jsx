@@ -36,9 +36,9 @@ function Login() {
           setAuthUser(res.data.user);
           setIsOpen(false);
           setInterval(() => {
-            window.location.reload();
             navigate("/course");
-          }, 1000);
+            window.location.reload();
+          }, 1300);
         }
       })
       .catch((err) => {
@@ -53,6 +53,7 @@ function Login() {
         }
       });
   };
+
   return (
     <>
       <Toaster position="top" reverseOrder={true} />

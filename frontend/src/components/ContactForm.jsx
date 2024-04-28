@@ -1,7 +1,11 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
+import toast, { Toaster } from "react-hot-toast";
 
 function ContactForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const form = useRef();
 
   const sendEmail = (e) => {
@@ -13,16 +17,29 @@ function ContactForm() {
       })
       .then(
         () => {
-          console.log("SUCCESS!");
+          toast.success("Message sent successfully!😁", {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+          form.current.reset();
         },
         (error) => {
-          console.log("FAILED...", error.text);
+          toast.error(error.text, {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
         }
       );
   };
-
   return (
     <>
+      <Toaster position="top" reverseOrder={true} />
       <div className="max-w-[1800px] mx-auto md:px-20 px-4">
         <div className="mt-40 text-center">
           <h1 className="text-3xl md:text-4xl font-semibold text-pink-500">
@@ -96,7 +113,7 @@ function ContactForm() {
           </div>
           <div className="flex justify-between items-center">
             <button
-              className="btn btn-outline btn-secondary mr-10 mt-8"
+              className="btn btn-outline btn-secondary mr-10 mt-8 text-md"
               type="submit"
             >
               Send

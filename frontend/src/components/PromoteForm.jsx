@@ -153,7 +153,7 @@ function PromoteForm() {
               className="btn btn-outline btn-secondary mr-10 mt-8 text-md"
               type="submit"
             >
-              Send
+              Promote
             </button>
           </div>
         </form>

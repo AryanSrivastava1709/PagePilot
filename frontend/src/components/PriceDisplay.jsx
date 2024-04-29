@@ -2,7 +2,7 @@ function PriceDisplay({ items }) {
   return (
     <>
       <div className="text-white">
-        <div className="mx-10 px-4 max-h-96 w-[500px] scroll-smooth bg-base-200 my-24 rounded-xl border border-pink-500">
+        <div className="mx-10 px-4 max-h-[500px] w-[500px] scroll-smooth bg-base-200 my-24 rounded-xl border border-pink-500">
           <div className="mt-10 mx-10">
             {items.map((item) => (
               <div

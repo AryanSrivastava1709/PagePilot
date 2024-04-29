@@ -2,19 +2,24 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import Cards from "./Cards";
 import { useEffect, useState } from "react";
+
 function Courses() {
   const [books, setBooks] = useState([]);
+  const [category, setCategory] = useState("All");
   useEffect(() => {
     const getBook = async () => {
       try {
-        const res = await axios.get("https://page-pilot-api.vercel.app/book");
+        const res = await axios.get(
+          `https://page-pilot-api.vercel.app/book?category=${category}`
+        );
         setBooks(res.data);
       } catch (error) {
         console.log(error);
       }
     };
     getBook();
-  }, []);
+  }, [category]);
+
   return (
     <>
       <div className="max-w-[1800px] mx-auto md:px-20 px-4">
@@ -33,8 +38,22 @@ function Courses() {
             Happy reading!
           </p>
           <button className="mt-10 btn btn-secondary text-lg text-white font-bold py-2 px-4 rounded-full">
-            <Link to="/">Go to Home</Link>
+            <Link to="/course/promote">Promote your own book</Link>
           </button>
+        </div>
+        <div className="mt-12 mb-20 flex justify-center">
+          <div className="relative inline-flex">
+            <select
+              className="rounded-full border border-gray-300 bg-base-200 px-4 py-2 pr-8 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+            >
+              <option className="bg-base-200 text-white text-md">All</option>
+              <option className="bg-base-200 text-white text-md">Free</option>
+              <option className="bg-base-200 text-white text-md">Paid</option>
+              <option className="bg-base-200 text-white text-md">Rent</option>
+            </select>
+          </div>
         </div>
         <div className="mt-12 grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 justify-items-center align-items-center">
           {books.map((item) => (

@@ -6,6 +6,7 @@ import Contact from "./Contact/Contact";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import About from "./About/About";
 import Cart from "./Cart/Cart";
+import BookSell from "./Course/BookSell";
 function App() {
   const [authUser, setAuthUser] = useAuth();
   return (
@@ -16,6 +17,10 @@ function App() {
           <Route
             path="/course"
             element={authUser ? <Course /> : <Navigate to="/sign" />}
+          />
+          <Route
+            path="/course/promote"
+            element={authUser ? <BookSell /> : <Navigate to="/sign" />}
           />
           <Route path="/sign" element=<Sign /> />
           <Route path="/contact" element=<Contact /> />

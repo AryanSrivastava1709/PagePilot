@@ -8,7 +8,6 @@ function Cards({ item }) {
     auth = auth ? JSON.parse(auth) : {};
     auth.orderedBooks = auth.orderedBooks || {};
     if (auth.orderedBooks[item._id]) {
-      // If it does, increment the count
       auth.orderedBooks[item._id].count += 1;
       setIsToasted(true);
       toast.success("Added to Cart👍", {
@@ -20,7 +19,6 @@ function Cards({ item }) {
       });
       setIsToasted(false);
     } else {
-      // If not, add it with a count of 1
       auth.orderedBooks[item._id] = { ...item, count: 1 };
       setIsToasted(true);
       toast.success("Added to Cart👍", {

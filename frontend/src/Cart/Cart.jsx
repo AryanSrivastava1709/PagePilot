@@ -38,20 +38,15 @@ function Cart() {
 
     localStorage.setItem("auth", JSON.stringify(auth));
 
-    // Update the cartItems state
     setCartItems(() => Object.values(orderedBooks));
   };
   useEffect(() => {
-    // Fetch the auth field from local storage
     let auth = localStorage.getItem("auth");
 
-    // Parse it to an object
     auth = auth ? JSON.parse(auth) : {};
 
-    // Extract the orderedBooks property
     const orderedBooks = auth.orderedBooks || {};
 
-    // Convert the orderedBooks object to an array and set it to the cartItems state
     setCartItems(() => Object.values(orderedBooks));
   }, []);
   return (

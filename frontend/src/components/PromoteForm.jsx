@@ -44,8 +44,9 @@ function PromoteForm() {
         }, 1500);
       })
       .catch((err) => {
-        if (err.response) {
-          toast.error(err.response.data.message, {
+        if (err) {
+          console.log(err);
+          toast.error(err.message, {
             style: {
               borderRadius: "10px",
               background: "#333",

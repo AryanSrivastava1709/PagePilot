@@ -11,6 +11,8 @@ router.get("/", (req, res) => {
     getBooks(req, res);
   } else if (req.query.category) {
     getBooksByCategory(req, res);
+  } else {
+    getBooks(req, res);
   }
 });
 router.post("/create", createBook);

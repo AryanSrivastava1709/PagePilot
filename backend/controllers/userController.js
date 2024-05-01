@@ -71,15 +71,6 @@ export const edit = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    if (user.email === email) {
-      return res.status(400).json({ message: "Please enter a new email id" });
-    }
-    if (user.fullname === fullname) {
-      return res.status(400).json({ message: "Please enter a new name" });
-    }
-    if (user.address === address) {
-      return res.status(400).json({ message: "Please enter a new address" });
-    }
     user.fullname = fullname || user.fullname;
     user.email = email || user.email;
     user.address = address || user.address;

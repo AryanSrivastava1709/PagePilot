@@ -1,5 +1,276 @@
-objectives
-screenshot
-intro and conlusion on ppt
+ backend:
 
-container mx-auto md:px-20 px2
+these are the dependencies used:
+ "bcrypt": "^5.1.1",
+    "cloudinary": "^1.41.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.2",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0",
+    "nodemon": "^3.1.0"
+
+    so i have used mongoDB for the storage and also i have used a proper file structure that is used for the backend
+    there are different fikders controller routes and models and also app and server are handled by different files
+
+    so in models i have implemented two models
+    userModel and bookModel
+    i have also implemented two routes bookRoutes and user Routes
+    import express from "express";
+import {
+  getBooks,
+  createBook,
+  getBooksByCategory,
+} from "../controllers/bookController.js";
+
+const router = express.Router();
+router.get("/", (req, res) => {
+  if (req.query.category === "All") {
+    getBooks(req, res);
+  } else if (req.query.category) {
+    getBooksByCategory(req, res);
+  } else {
+    getBooks(req, res);
+  }
+});
+router.post("/create", createBook);
+export default router;
+
+import { signup, login } from "../controllers/userController.js";
+import express from "express";
+
+const router = express.Router();
+
+router.post("/signup", signup);
+router.post("/login", login);
+
+export default router;
+
+index.js file:
+import express from "express";
+import cors from "cors";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import bookRoutes from "./routes/bookRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export const app = express();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "bookstore",
+    format: async (req, file) => "png", // supports promises as well
+    public_id: (req, file) => file.originalname,
+  },
+});
+
+const parser = multer({ storage: storage });
+
+app.use(cors());
+app.use(express.static(`${__dirname}/public`));
+
+app.use(
+  express.json({
+    limit: "10kb",
+  })
+);
+
+//Serving Static Files
+app.use(express.static(`${__dirname}/public`));
+
+//example get
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
+//definig routes
+app.use("/book", parser.single("image"), bookRoutes);
+app.use("/user", userRoutes);
+
+server.js file:
+import mongoose from "mongoose";
+import { app } from "./index.js";
+import dotenv from "dotenv";
+
+process.on("uncaughtException", (err) => {
+  console.log(err.name, err.message);
+  console.log("Shutting down....");
+  process.exit(1);
+});
+
+dotenv.config();
+
+//Database Setup
+const DB = process.env.MONGO_URI;
+
+mongoose
+  .connect(DB)
+  .then(() => {
+    console.log("DB connection successful");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
+
+// Server Setup
+const port = process.env.PORT || 6000;
+const server = app.listen(port, () => {
+  console.log(`Server is running on ${port}`);
+});
+process.on("unhandledRejection", (err) => {
+  console.log(err.name, err.message);
+  console.log("UNHANDLED REJECTION! Shutting down...");
+  server.close(() => {
+    process.exit(1);
+  });
+});
+
+
+in controller i have create two controller user and book
+in book there are three methods get books get books by cateoory createbook
+in user there are two methods login and register
+
+import User from "../models/userModel.js";
+import bcrypt from "bcrypt";
+
+export const signup = async (req, res) => {
+  try {
+    const { fullname, email, password } = req.body;
+
+    // Validate user input
+    if (!fullname || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    if (password.toString().length < 6) {
+      return res
+        .status(400)
+        .json({ message: "Password must be atleast 6 characters long" });
+    }
+    const user = await User.findOne({ email });
+    if (user) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
+      fullname,
+      email,
+      password: hashedPassword,
+    });
+    await newUser.save();
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        _id: newUser._id,
+        fullname: newUser.fullname,
+        email: newUser.email,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return res.status(400).json({ message: "Please register yourself!!" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    } else {
+      return res.status(200).json({
+        message: "Login successful",
+        user: {
+          _id: user._id,
+          fullname: user.fullname,
+          email: user.email,
+        },
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+import express from "express";
+import {
+  getBooks,
+  createBook,
+  getBooksByCategory,
+} from "../controllers/bookController.js";
+
+const router = express.Router();
+router.get("/", (req, res) => {
+  if (req.query.category === "All") {
+    getBooks(req, res);
+  } else if (req.query.category) {
+    getBooksByCategory(req, res);
+  } else {
+    getBooks(req, res);
+  }
+});
+router.post("/create", createBook);
+export default router;
+
+    
+
+    So i have create a book store full stack application create with mern stack
+
+so on the frontend we have certain functionalities:
+on opening the site you will be presented with home that have a beutiful header and a navbar with a catlog that will show free books for you
+navbar have following options home book contact about and logout login button based on the state of login or log out and a cart button
+you can only acces book and cart if you login
+you can access contact and about us if you are logout also
+if you fill the contact form and press send it will use emailjs and the message is send to my email
+you can login and signup based on the state if you are first user or existing one
+so on login you can access book page where you can get all type of book whether it on rent paid or free on pagepilot either you can buy book rent it or take the books that are free of cost
+whole website is dynamic is powered by a powerful backend 
+if you want to promote your own book on our site you can do this also on the book page by clicking on promote book button and then filling all your details yout website will be sne tto the DB and then your book will be displayed on our website whether it is free rent or paid
+
+you can also filter the data on book page on the basis of rent paid and free
+
+cart is very dynamic you can add the items by clicking buy now and also you can remove it from the cart
+
+the total bill is also dynamic it will display all the items in your cart and with the number of counts of the same item you have purchased and at last it will tell you the sum of the book you have purchased 
+
+cart and login functionality is backed up by local storage and use State and use Efect hooks and a powerful backend 
+if the user logout all its data will be erased 
+
+but remeber if the user is login it data will persist and will be same if he refreshed the page
+
+all the notification on the frontend is handled by a beautiful toaster
+
+dependencies used:
+
+"@emailjs/browser": "^4.3.3",
+    "axios": "^1.6.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.3",
+    "react-hot-toast": "^2.4.1",
+    "react-router-dom": "^6.23.0",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1"
+
+so this is the overall project now analyse it and then tell me the anwers
+

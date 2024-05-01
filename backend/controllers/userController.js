@@ -62,3 +62,32 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const edit = async (req, res) => {
+  try {
+    const { fullname, email, address } = req.body;
+    const { id } = req.params;
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (user.email === email) {
+      return res.status(400).json({ message: "Please enter a new email id" });
+    }
+    if (user.fullname === fullname) {
+      return res.status(400).json({ message: "Please enter a new name" });
+    }
+    if (user.address === address) {
+      return res.status(400).json({ message: "Please enter a new address" });
+    }
+    user.fullname = fullname || user.fullname;
+    user.email = email || user.email;
+    user.address = address || user.address;
+    await user.save();
+    return res.status(200).json({
+      message: "User updated successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};

@@ -7,6 +7,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import About from "./About/About";
 import Cart from "./Cart/Cart";
 import BookSell from "./Course/BookSell";
+import EditPage from "./Edit Page/EditPage";
 function App() {
   const [authUser, setAuthUser] = useAuth();
   return (
@@ -28,6 +29,10 @@ function App() {
           <Route
             path="/cart"
             element={authUser ? <Cart /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/edit"
+            element={authUser ? <EditPage /> : <Navigate to="/sign" />}
           />
         </Routes>
       </BrowserRouter>

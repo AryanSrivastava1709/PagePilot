@@ -116,23 +116,39 @@ function Navbar() {
                 </svg>
               </label>
             </div>
-            <div>
-              <a
-                onClick={
-                  authUser
-                    ? handleLogout
-                    : () => {
-                        document.getElementById("my_modal_2").showModal();
-                      }
-                }
-                className={`btn  ${
-                  authUser ? "hover:bg-red-500" : "hover:bg-blue-500"
-                } text-white`}
+            <div className="dropdown dropdown-end">
+              <div tabIndex={0} role="button" className="btn m-1 text-white">
+                Profile
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
               >
-                {authUser ? "Logout" : "Login"}
-              </a>
+                <li>
+                  <Link to="/edit" className="btn hover:bg-blue-500 text-white">
+                    Edit Profile
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    onClick={
+                      authUser
+                        ? handleLogout
+                        : () => {
+                            document.getElementById("my_modal_2").showModal();
+                          }
+                    }
+                    className={`btn  ${
+                      authUser ? "hover:bg-red-500" : "hover:bg-blue-500"
+                    } text-white`}
+                  >
+                    {authUser ? "Logout" : "Login"}
+                  </a>
+                </li>
+              </ul>
               <Login />
             </div>
+
             <div>
               {authUser && (
                 <div>

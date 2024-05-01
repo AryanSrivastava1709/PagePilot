@@ -7,17 +7,14 @@ import NavBar from "../components/Navbar";
 
 function EditPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ fullname: "", email: "", address: "" });
   useEffect(() => {
     const data = localStorage.getItem("auth");
     if (data) {
       setUser(JSON.parse(data));
     }
-    console.log(data);
+    return () => setUser({ fullname: "", email: "", address: "" });
   }, []);
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-  };
   const {
     register,
     handleSubmit,
@@ -26,7 +23,46 @@ function EditPage() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    // console.log(data); for test purpose
+    const updatedData = {
+      fullname: data.fullname,
+      email: data.email,
+      address: data.address,
+    };
+    console.log(updatedData);
+    let existingData = JSON.parse(localStorage.getItem("auth"));
+    existingData = { ...existingData, ...updatedData };
+    localStorage.setItem("auth", JSON.stringify(existingData));
+    await axios
+      .post(
+        `https://page-pilot-api.vercel.app/user/edit/${existingData._id}`,
+        updatedData
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Details updated successfully!!😍", {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      })
+      .catch((err) => {
+        if (err) {
+          console.log(err);
+          toast.error(err.message, {
+            style: {
+              borderRadius: "10px",
+              background: "#333",
+              color: "#fff",
+            },
+          });
+        }
+      });
   };
   return (
     <>
@@ -48,9 +84,8 @@ function EditPage() {
             <h2 className="text-white text-2xl mt-2 mb-4 ml-2">Name</h2>
             <label className="input text-xl input-bordered flex items-center h-16 gap-2 text-white focus-within:text-secondary">
               <input
-                name="fullname"
-                value={user.fullname}
-                onChange={handleChange}
+                defaultValue={user.fullname}
+                onChange={(e) => setUser({ ...user, fullname: e.target.value })}
                 type="text"
                 className="grow text-white focus-within:text-white"
                 placeholder="Your Name"
@@ -62,8 +97,8 @@ function EditPage() {
             <h2 className="text-white text-2xl mt-2 mb-4 ml-2">Email</h2>
             <label className="input text-xl input-bordered flex items-center h-16 gap-2 text-white focus-within:text-secondary">
               <input
-                value={user.email}
-                onChange={handleChange}
+                defaultValue={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
                 type="text"
                 className="grow text-white focus-within:text-white"
                 placeholder="Your Email"
@@ -75,8 +110,8 @@ function EditPage() {
             <h2 className="text-white text-2xl mt-2 mb-4 ml-2">Address</h2>
             <label className="input text-xl input-bordered flex items-center h-16 gap-2 text-white focus-within:text-secondary">
               <input
-                value={user.address}
-                onChange={handleChange}
+                defaultValue={user.address}
+                onChange={(e) => setUser({ ...user, address: e.target.value })}
                 type="text"
                 className="grow text-white focus-within:text-white"
                 placeholder="Your Address"
@@ -94,7 +129,7 @@ function EditPage() {
             </button>
             <button
               className="btn btn-outline btn-error mr-10 mt-8 text-md"
-              type="submit"
+              type="button"
             >
               <Link to="/">Cancel</Link>
             </button>
